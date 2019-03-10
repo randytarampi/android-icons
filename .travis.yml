@@ -3,13 +3,19 @@ notifications:
   email: false
 dist: xenial
 node_js:
-  - 8
-  - 4
-  - 6
-  - 10
-  - node
-after_success:
-  - npm run semantic-release
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
+- 8
+- 6
+- 10
+- node
+before_deploy:
+- git config --local user.name "$TRAVIS_AUTHOR_NAME"
+- git config --local user.email "$TRAVIS_AUTHOR_EMAIL"
+deploy:
+  provider: script
+  script: npx semantic-release
+  skip_cleanup: true
+  on:
+    branch: master
+    node: 8
+    os: linux
+sudo: false
